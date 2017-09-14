@@ -4,7 +4,7 @@ Repository for HW assignments of Stat 133 (Fall 2017)
 
 - Student name: Donggyun Kim
 - Github username: dgyunkim
-- Lab section: 101
+- Lab section: 104
 - GSI: Xiaoqi Zhang
 
 -----
