@@ -1,0 +1,250 @@
+---
+title: "hw01-donggyun-kim"
+author: "Donggyun Kim"
+date: "9/21/2017"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. A bit of data preprocessing
+## + Importing the data
+```{r}
+load("data/nba2017-salary-points.RData")
+```
+
+## + Showing the list
+```{r}
+ls()
+```
+
+## + Creating a **_new_** salary variable
+```{r}
+new_salary <- salary/1000000
+
+round(new_salary, digits=2)
+```
+
+## + Creating a **_new_** exprience variable
+```{r}
+new_experience <- strtoi(experience, base = 0L)
+new_experience[is.na(new_experience)] <- 0
+
+new_experience
+```
+
+## + Replacing old level to new level and creating a **_new_** position variable
+```{r}
+position <- replace(position, position == 'C', 'center')
+position <- replace(position, position == 'SF', 'small_fwd')
+position <- replace(position, position == 'PF', 'power_fwd')
+position <- replace(position, position == 'SG', 'shoot_guard')
+position <- replace(position, position == 'PG', 'point_guard')
+
+new_position <- factor(position)
+table(new_position)
+```
+
+# 2. Scatterplot of Points and Salary
+```{r}
+plot(points, new_salary, main = "Scatterplot of Points and Salary", 
+     col = "blue", xlab = "Points", ylab = "Salary (in millions)", 
+     cex = 1, cex.lab = 1.5, cex.main = 2.0, pch = 21, bg = "green")
+```
+
+# 3. Correlation between Points and Salary
+## + Number of individuals
+```{r}
+n <- length(player)
+n
+```
+
+## + Mean of variable X (Points)
+```{r}
+xbar <- sum(points)/n
+xbar
+```
+
+## + Mean of variable Y (Salary)
+```{r}
+ybar <- sum(new_salary)/n
+ybar
+```
+
+## + Variance of X (Points)
+```{r}
+var_x <- sum((points-xbar)^2)/(n-1)
+var_x
+```
+
+## + Variance of Y (Salary)
+```{r}
+var_y <- sum((new_salary-ybar)^2)/(n-1)
+var_y
+```
+
+## + Standard deviation of X (Points)
+```{r}
+sd_x <- sqrt(var_x)
+sd_x
+```
+
+## + Standard deviation of Y (Salary)
+```{r}
+sd_y <- sqrt(var_y)
+sd_y
+```
+
+## + Covariance between X and Y
+```{r}
+cov_xy <- sum((points - xbar)*(new_salary - ybar))/(n-1)
+cov_xy
+```
+
+## + Correlation between X and Y
+```{r}
+cor_xy <- cov_xy/(sd_x*sd_y)
+cor_xy
+```
+
+# 4. Simple Linear Regression
+```{r}
+b1 <-  cor_xy*sd_y/sd_x
+b0 <-  ybar - b1*xbar
+y_hat <- b0 + b1 * points
+
+```
+
+## + Summary statistics of y_hat
+```{r}
+summary(y_hat)
+```
+
+## + The regression equation
+\[
+ \hat{Y} = b_0 + b_1 \times X
+\]
+
+## + The slope of coefficient b1
+The slope b1 equals covariance between X and Y divided by variance of X 
+```{r}
+b1
+```
+```{r}
+cov_xy / var_x
+
+```
+
+## + The intercept term b0
+```{r}
+
+```
+
+## + the predicted salary
+```{r}
+predictied_salary <- function(x){
+  y <- b0 + b1 * x
+  return(y)
+}
+```
+### A player who scores 0 point would get
+```{r}
+predictied_salary(0)
+```
+### A player who scores 100 points would get
+```{r}
+predictied_salary(100)
+```
+### A player who scores 500 points would get
+```{r}
+predictied_salary(500)
+```
+### A player who scores 1000 points would get
+```{r}
+predictied_salary(1000)
+```
+### A player who scores 2000 points would get
+```{r}
+predictied_salary(2000)
+```
+
+# 5. Plotting the regression line
+```{r}
+plot(points, new_salary, main = "Regression and Lowess lines", 
+     col = "red", xlab = "Points", ylab = "Salary (in millions)", 
+     cex = 1, cex.lab = 1.5, cex.main = 2.0, pch = 21, bg = "blue")
+abline(a = b0, b = b1, lwd = 3, col = "Skyblue")
+lines(lowess(points, new_salary), lwd = 3, col = "Pink")
+text(x = 2400, y = 30, labels = "Lowess", col = "Pink")
+text(x = 2400, y = 19, labels = "Regression", col = "Skyblue")
+```
+
+# 6. Regression residuals and Coefficient of Determination R-squared
+
+## + The vector of residuals
+```{r/}
+residuals <-  new_salary - y_hat
+summary(residuals)
+```
+
+## + The ReSidual Sum of Squares
+```{r}
+RSS <- sum(residuals^2)
+RSS
+```
+
+## + The Total Sum of Squares
+```{r}
+TSS <- sum((new_salary - ybar)^2)
+TSS
+```
+
+## + The coefficient of determination R-squared
+```{r}
+R_sqrd <- 1 - RSS/TSS
+R_sqrd
+```
+
+# 7. Exploring Position and Experience
+```{r}
+plot(x = new_experience, y = new_salary, main = "Scatterplot with lowess smooth", 
+     xlab = "Years of Experience", ylab = "Salary (in millions)", 
+     cex = 1.5, cex.main = 2, cex.lab = 1.5, cex.axis = 1.5, pch = 21, bg = "Gray")
+lines(lowess(new_experience, new_salary), lwd = 3.5, col = "Red") 
+
+
+scatterplot3d::scatterplot3d(points, new_experience, new_salary, main = "3D Scatterplot",
+              xlab = "Points", ylab = "Experience", zlab = "Salary", cex.axis = 1.5, cex.lab = 1.5)
+
+boxplot(new_salary[new_position == 'center'], new_salary[new_position == 'power_fwd'],
+        new_salary[new_position == 'small_fwd'], new_salary[new_position == 'point_guard'],
+        new_salary[new_position == 'shoot_guard'], ylab = 'Salary (in millions)', xlab = 'Position',
+        names=c("center", "power_fwd", "small_fwd", "point_guard", "shoot_guard"))
+
+
+```
+
+## + Provide concise descriptions for the plots of this section.
+Plots help to analyze and understand data sets
+
+## + From the scatterplots, does Experience seem to be related with Salary?
+No, lowess line shows that Experience is not realated with Salary.
+
+## + From the boxplot, does Position seem to be related with Salary?
+No, Position does not seem to be related with Salary.
+
+# 8. Comments and Reflections
++ What was easy(-ish) even though we haven’t done it in class?  
+Part 3) Correlation
++ How much time did it take to complete this HW?  
+8 hours  
++ What was the most time consuming part?  
+Data processing  
++ Was there anything that you did not understand? or fully grasped?  
+Wirting equation using inline code  
++ Was there anything frustrating in particular?  
+I could never find how to write equation by inline code. 
++ Was there anything exciting? Something that you feel proud of?  
+Using 'sum()' function and number of samples to find mean, variance instead of using 'mean()' and 'var()' functions
