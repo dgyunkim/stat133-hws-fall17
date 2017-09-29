@@ -1,0 +1,11 @@
+---
+title: "hw02-donggyun-kim"
+author: "Donggyun Kim"
+date: "9/28/2017"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
