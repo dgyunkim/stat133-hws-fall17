@@ -1,6 +1,6 @@
 # A data dictionary
 
-- This data set is about records of nba players in 2017.  
+- This data set is about records of NBA players in 2017.  
 - It has 411 rows as number of players and 24 columns that shows records of each player.  
 
 ## Column labels

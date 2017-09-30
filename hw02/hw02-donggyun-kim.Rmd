@@ -12,18 +12,143 @@ knitr::opts_chunk$set(echo = TRUE)
 [A data dictionary](https://github.com/dgyunkim/stat133-hws-fall17/blob/master/hw02/data/nba2017-player-statistics-dictionary.md)
 
 ## 2) Import the data in R
-- Importing Data with "base"
+- Import data with "base"
 ```{r}
 setwd("~/Desktop/STAT 133/stat133-hws-fall17/hw02/data")
-nba2017_base <- read.csv("nba2017-player-statistics.csv", header = TRUE, colClasses = c("character", "character", "factor", "character", "double", rep("integer", 19)))
-str(nba2017_base)
+nba2017 <- read.csv("nba2017-player-statistics.csv", 
+                colClasses = c("character", "character", "factor", "character", "double", rep("integer", 19)))
+str(nba2017)
 ```
 
-- Importing Data with "readr"
+- Import data with "readr"
+`r library(readr)`
 ```{r}
 setwd("~/Desktop/STAT 133/stat133-hws-fall17/hw02/data")
-library(readr)
-nba2017_readr <- read_csv("nba2017-player-statistics.csv", 
+nba2017 <- read_csv("nba2017-player-statistics.csv", 
                           col_types = list(Position = col_factor(c("C", "PF", "SF", "PG", "SG"))))
-str(nba2017_readr)
+str(nba2017)
 ```
+
+## 3) Right after importing the data
+- Process on the column "Experience"
+```{r}
+nba2017[["Experience"]][nba2017[["Experience"]] == "R"] <- "0"
+nba2017$Experience <- as.integer(nba2017$Experience)
+nba2017
+```
+
+## 4) Performance of players
+- Add new variables
+```{r}
+nba2017$Missed_FG <- nba2017$FGA - nba2017$FGM
+nba2017$Missed_FT <- nba2017$FTA - nba2017$FTM
+nba2017$PTS <- nba2017$FGM + nba2017$FTM
+nba2017$REB <- nba2017$OREB + nba2017$DREB
+nba2017$MPG <- nba2017$MIN / nba2017$GP
+```
+
+- Calculate and add EFF
+```{r}
+nba2017$EFF <- (nba2017$PTS + nba2017$REB + nba2017$AST + nba2017$STL
+                + nba2017$BLK - nba2017$Missed_FG - nba2017$Missed_FT - nba2017$TO) / nba2017$GP
+```
+
+- Summary of EFF
+```{r}
+summary(nba2017$EFF)
+```
+
+- Histogram of Efficiency (EFF)
+```{r}
+hist(nba2017$EFF, main = "Histogram of Efficiency (EFF)", xlab = "EFF", col = "Blue")
+```
+
+- Display the player name, team, salary, and EFF value of the top-10 players by EFF in
+decreasing order
+`r library(dplyr)`
+```{r}
+head(arrange(select(nba2017, Player, Team, Salary, EFF), desc(EFF)), 10)
+```
+
+- Provide the names of the players that have a negative EFF
+```{r}
+select(filter(nba2017, EFF < 0), Player)
+```
+
+- Use the function cor() to compute the correlation coefficients between EFF and all the
+variables used in the EFF formula
+```{r}
+cor_PTS <- cor(nba2017$EFF, nba2017$PTS)
+cor_REB <- cor(nba2017$EFF, nba2017$REB)
+cor_AST <- cor(nba2017$EFF, nba2017$AST)
+cor_STL <- cor(nba2017$EFF, nba2017$STL)
+cor_BLK <- cor(nba2017$EFF, nba2017$BLK)
+cor_MFG <- cor(nba2017$EFF, -nba2017$Missed_FG)
+cor_MFT <- cor(nba2017$EFF, -nba2017$Missed_FT)
+cor_TO <- cor(nba2017$EFF, -nba2017$TO)
+```
+
+- Display the computed correlations in descending order, either in a vector or a data
+frame.
+```{r}
+corrs <- c(cor_PTS, cor_REB, cor_AST, cor_STL, cor_BLK, cor_MFG, cor_MFT, cor_TO)
+mydat <- data.frame(corrs)
+arrange(mydat, desc(corrs))
+```
+
+- create a barchart with the correlations
+`r library(ggplot2)`
+```{r}
+barplot(sort(corrs, decreasing = TRUE), main = "Correlations between Player Stats and EFF",
+        names.arg = c("PTS", "REB", "AST", "STL","BLK", "Missed_FT", "Missed_FG", "TO"),
+        cex.names = 0.6, col = ifelse(corrs > 0, "blue", "red"), ylim = c(-1, 1))
+abline(h = 0, lwd = 2)
+```
+
+## 5) Efficiency and Salary
+- scatterplot between Efficiency and Salary
+```{r}
+plot(nba2017$EFF, nba2017$Salary, main = "Scatterplot between Efficiency and Salary",
+     xlab = "EFF", ylab = "Salary", pch = 21, cex = 1.5, col = "skyblue", bg = "red",
+     cex.lab = 1.5)
+lines(lowess(nba2017$EFF, nba2017$Salary), lwd = 3, col = "green")
+text(x = 20, y = 2.0e+07, labels = "Lowess", cex = 1.5, col = "green")
+```
+
+- the linear correlation coefficient between Efficiency and Salary
+```{r}
+b1 <- cor(nba2017$EFF, nba2017$Salary)*sd(nba2017$Salary)/sd(nba2017$EFF)
+b0 <- mean(nba2017$Salary) - b1*mean(nba2017$EFF)
+y_hat <- b0 + b1*nba2017$EFF
+RSS <- sum((nba2017$Salary - y_hat)^2)
+TSS <- sum((nba2017$Salary - mean(nba2017$Salary)^2))
+cor_coeff <- 1 - RSS/TSS
+cor_coeff
+```
+
+- Create a data frame players2
+```{r}
+players2 <- select(filter(nba2017, MPG >= 20), Player, MPG, EFF, Salary)
+players2
+```
+
+- Use this data frame to create a scatterplot between Efficiency and Salary
+```{r}
+plot(players2$EFF, players2$Salary, main = "Scatterplot between Efficiency and Salary",
+     xlab = "EFF", ylab = "Salary", cex = 1.5, cex.lab = 1.5, pch = 21, col = "yellow", 
+     bg = "pink")
+lines(lowess(players2$EFF, players2$Salary), lwd = 3, col = "blue")
+text(x = 20, y = 1.7e+07, labels = "Lowess", cex = 1.5, col = "blue")
+```
+
+- Compute the linear correlation coefficient
+```{r}
+b1 <- cor(players2$EFF, players2$Salary)*sd(players2$Salary)/sd(players2$EFF)
+b0 <- mean(players2$Salary) - b1*mean(players2$EFF)
+y_hat <- b0 + b1*players2$EFF
+RSS <- sum((players2$Salary - y_hat)^2)
+TSS <- sum((players2$Salary - mean(players2$Salary)^2))
+cor_coeff <- 1 - RSS/TSS
+cor_coeff
+```
+
