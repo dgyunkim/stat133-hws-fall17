@@ -8,4 +8,22 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## 1) Create a data dictionary
+[A data dictionary](https://github.com/dgyunkim/stat133-hws-fall17/blob/master/hw02/data/nba2017-player-statistics-dictionary.md)
 
+## 2) Import the data in R
+- Importing Data with "base"
+```{r}
+setwd("~/Desktop/STAT 133/stat133-hws-fall17/hw02/data")
+nba2017_base <- read.csv("nba2017-player-statistics.csv", header = TRUE, colClasses = c("character", "character", "factor", "character", "double", rep("integer", 19)))
+str(nba2017_base)
+```
+
+- Importing Data with "readr"
+```{r}
+setwd("~/Desktop/STAT 133/stat133-hws-fall17/hw02/data")
+library(readr)
+nba2017_readr <- read_csv("nba2017-player-statistics.csv", 
+                          col_types = list(Position = col_factor(c("C", "PF", "SF", "PG", "SG"))))
+str(nba2017_readr)
+```
