@@ -1,0 +1,11 @@
+---
+title: "HW03 - Ranking NBA Teams"
+author: "Donggyun Kim"
+date: "2017-10-06"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
