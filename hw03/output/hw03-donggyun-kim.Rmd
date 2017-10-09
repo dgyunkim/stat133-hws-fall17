@@ -14,6 +14,7 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 teams<- read_csv("./data/nba2017_teams.csv")
+attributes(teams)$row.names <- teams$team
 ```
 
 # Basic Rankings
@@ -39,4 +40,37 @@ ggplot(teams, aes(x = reorder(team, efficiency), y = efficiency)) +
   coord_flip() +
   geom_hline(yintercept = mean(teams$efficiency), col = "Red") +
   labs(x = "Team", y = "Total Efficiency", title = "NBA Teams ranked by Total Efficiency")
+```
+
+# Principal Components Analysis (PCA)
+```{r}
+teams1 <- teams %>%
+  select(points3, points2, free_throws, off_rebounds, def_rebounds, assists, steals,
+         blocks, turnovers, fouls)
+
+pca <- prcomp(teams1, scale. = TRUE)
+
+eigs <- data.frame(
+  eigenvalue = round(pca$sdev^2, 4),
+  prop = round(pca$sdev^2 / sum(pca$sdev^2), 4)
+)
+eigs$cumprop <- cumsum(eigs$prop)
+eigs
+```
+
+```{r}
+pci <- data.frame(pca$x)
+ggplot(pci, aes(x = PC1, y = PC2)) + geom_text(label = rownames(pci))
+```
+
+```{r}
+z1 <- pci %>%
+  select(PC1)
+s1 <- (z1 - min(z1))/(max(z1) - min(z1))*100
+s1$team <- attributes(s1)$row.names
+ggplot(s1, aes(x = reorder(team, PC1), y = PC1)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  geom_hline(yintercept = mean(s1$PC1), col = "red") +
+  labs(x = "Team", y = "Firtst PC (scaled from 0 to 100)", title = "NBA Teams ranked by scaled PC1")
 ```
