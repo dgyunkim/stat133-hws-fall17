@@ -1,0 +1,108 @@
+---
+title: "Untitled"
+author: "Donggyun Kim"
+date: "10/11/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lab 02
+
+Load the data file
+```{r}
+load('nba2017-salary-points.RData')
+```
+
+Inspect the data objects
+```{r}
+typeof(player)
+mode(points)
+class(position)
+str(team)
+object.size(salary)
+length(points3)
+head(points1)
+tail(points2)
+summary(team)
+```
+
+Vectors in R
+```{r}
+is.vector(player)
+is.vector(team)
+is.atomic(player)
+is.atomic(team)
+is.factor(team)
+is.factor(player)
+```
+
+Manipulate vectors
+```{r}
+four <- player[1:4]
+four
+four[0]
+four[-1]
+four[c(-1,-2,-3)]
+four[5]
+four[c(1,2,2,3,3,3)]
+player[seq(2, length(player), 2)] # Even elements in `player`
+salary[seq(1, length(salary), 2)] # Odd elements in `salary`
+team[seq(5, length(team), 5)] # Multiples of 5
+points[seq(10, length(points), 10)]
+team[seq(440, 2, -2)]
+```
+
+Sebsetting with logical vectors
+```{r}
+player[which(team == "GSW" & position == "C")]
+player[which(team == "GSW" | team == "LAL")]
+player[which(team == "LAL" & (position == "PG" | position == "SG"))]
+```
+
+Subsetting with character vectors
+```{r}
+warriors_player <- player[team == "GSW"]
+warriors_salary <- salary[team == "GSW"]
+warriors_points <- points[team == "GSW"]
+names(warriors_salary) <- warriors_player
+warriors_salary["Andre Iguodala"]
+warriors_salary[c("Stephen Curry", "Kevin Durant")]
+```
+
+Some plotting
+```{r}
+plot(points, salary)
+log_points <- log(points)
+log_salary <- log(salary)
+plot(log_points, log_salary)
+text(log_points, log_salary, labels = player)
+plot(log_points, log_salary)
+text(log_points, log_salary, labels = abbreviate(player))
+```
+
+Recycling
+```{r}
+salary_millions <- salary/100000
+```
+
+Factors
+```{r}
+is.factor(team)
+is.factor(position)
+position_fac <- factor(position)
+table(position_fac)
+position_fac[1:5]
+position_fac[team == "GSW"]
+position_fac[salary_millions > 15]
+table(position_fac[salary_millions > 15])
+prop.table(table(team[position_fac == "SG"]))
+```
+
+More plots
+```{r}
+plot(points, salary, col = position_fac, cex = 1.5, pch = 21)
+```
+

@@ -21,12 +21,6 @@ library(ggplot2)
 roster <- read_csv("./data/nba2017-roster.csv")
 stats <- read_csv("./data/nba2017-stats.csv")
 
-# replace NA to 0
-stats$points3_perc[is.na(stats$points3_perc)] <- 0
-stats$points2_perc[is.na(stats$points2_perc)] <- 0
-stats$points1_perc[is.na(stats$points1_perc)] <- 0
-
-
 # add new variable
 stats <- stats %>% mutate(missed_fg = field_goals_atts - field_goals_made) # missed field goals
 stats <- stats %>% mutate(missed_ft = points1_atts - points1_made) # missed free throws
@@ -47,14 +41,12 @@ roster_stats <- roster %>%
 # creat a data frame, teams
 teams <- roster_stats %>%
   group_by(team) %>%
-  summarise(weight = round(mean(weight), 2), height = round(mean(height), 2), experience = sum(experience),
-            salary = round(sum(salary) / 1000000, 2), age = sum(age), 
+  summarise(experience = sum(experience), salary = round(sum(salary) / 1000000, 2), 
             points3 = sum(points3_made), points2 = sum(points2_made),
             free_throws = sum(points1_made), points = sum(points), 
-            points3_perc = mean(points3_perc), points2_perc = mean(points2_perc),
-            points1_perc = mean(points1_perc), off_rebounds = sum(off_rebounds), 
-            def_rebounds = sum(def_rebounds), assists = sum(assists), 
-            steals = sum(steals), blocks = sum(blocks), turnovers = sum(turnovers),
+            off_rebounds = sum(off_rebounds), def_rebounds = sum(def_rebounds), 
+            assists = sum(assists), steals = sum(steals), 
+            blocks = sum(blocks), turnovers = sum(turnovers),
             fouls = sum(fouls), efficiency = sum(efficiency))
 
 # summary text file
