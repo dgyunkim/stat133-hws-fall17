@@ -1,0 +1,150 @@
+---
+title : "Lab 04"
+author : "Donggyun Kim"
+date: "10/12/2017"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+col_names <- c(
+    'sex',
+    'length',
+    'diameter',
+    'height',
+    'whole_weight',
+    'shucked_weight',
+    'viscera_weight',
+    'shell_weight',
+    'rings')
+
+col_types <- c(
+    'factor',
+    'numeric',
+    'numeric',
+    'numeric',
+    'numeric',
+    'numeric',
+    'numeric',
+    'numeric',
+    'integer'   
+)
+
+abalone <- read.table(
+  "abalone.data", 
+  col.names = col_names, 
+  colClasses = col_types, 
+  sep = ","
+)
+
+str(abalone)
+
+abalone <- read.csv(
+  "abalone.data",
+  col.names = col_names
+)
+str(abalone)
+summary(abalone)
+```
+
+Plots
+```{r}
+plot(abalone$sex)
+table_sex <- table(abalone$sex)
+barplot(table_sex)
+hist(abalone$diameter)
+boxplot(abalone$diameter, horizontal = TRUE)
+```
+
+Pittsburgh Bridges Data Set
+```{r}
+url <- "http://archive.ics.uci.edu/ml/machine-learning-databases/bridges/bridges.data.version1"
+dest <- "bridges.data"
+download.file(url, dest)
+bridges <- read.table(dest)
+bridges <- read.csv(dest)
+str(bridges)
+summary(bridges)
+head(bridges)
+tail(bridges)
+dim(bridges)
+names(bridges)
+colnames(bridges)
+row.names(bridges)
+nrow(bridges)
+ncol(bridges)
+```
+
+Creating data frames
+```{r}
+my_table <- data.frame(
+  col1 = letters[1:5],
+  col2 = seq(10, 50, 10),
+  col3 = c(TRUE, TRUE, FALSE, TRUE, FALSE),
+  stringsAsFactors = FALSE
+)
+str(my_table)
+```
+
+Data frame of GSW
+```{r}
+Player <- c("Thompson", "Curry", "Green", "Durant", "Pachulia")
+Position <- c("SG", "PG", "PF", "SF", "C")
+Salary <- c(16663575, 12112359, 15330435, 26540100, 2898000)
+Points <- c(1742, 1999, 776, 1555, 426)
+PPG <- c(22.3, 25.3, 10.2, 25.1, 6.1)
+Rookie <- c(rep(FALSE, 5))
+gsw <- data.frame(
+  Player,
+  Position,
+  Salary,
+  Points,
+  PPG,
+  Rookie,
+  stringsAsFactors = FALSE
+)
+str(gsw)
+gsw$Position <- as.factor(gsw$Position)
+gsw$Points <- as.integer(gsw$Points)
+str(gsw)
+
+gsw2 <- cbind(Player, Position, Salary, Points, PPG, Rookie)
+gsw2 <- data.frame(gsw2, stringsAsFactors = FALSE)
+str(gsw2)
+```
+
+Adding column
+```{r}
+gsw$new_column <- c(1,2,3,4,5)
+gsw
+weight <- c(215, 190, 230, 240, 270)
+gsw <- cbind(gsw, weight)
+```
+
+Deleting column
+```{r}
+gsw$new_column <- NULL
+gsw
+```
+
+Renaming columns
+```{r}
+attributes(gsw)$names <- c("player", "position", "salary", "points", "ppg", "rooky", "weight")
+gsw
+```
+
+Moving columns
+```{r}
+reorder_names <- c("player", "weight", "position", "points", "ppg", "salary", "rooky")
+gsw <- gsw[, reorder_names]
+gsw
+```
+
+Transforming columns
+```{r}
+gsw$salary <- gsw$salary/1000000
+gsw
+```
