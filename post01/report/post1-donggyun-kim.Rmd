@@ -2,7 +2,7 @@
 author: "Donggyun Kim"
 title: "Post 1 - Reactivity in Shiny Apps"
 date: "10/30/2017"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -158,7 +158,7 @@ reactivity <- function(input) {
   output
 }
 
-#users set initial vlaue(input) 2
+#users set initial value(input) 2
 input <- 2
 
 #reactivity function takes input value 2,
@@ -174,7 +174,7 @@ redefined. That is, _input_ **interacts** with _output_ through the `reactivity`
 input <- 3
 reactivity(input)
 
-#set another differnet input
+#set another different input
 input <- 4
 reactivity(input)
 ```

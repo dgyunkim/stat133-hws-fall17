@@ -159,7 +159,7 @@ reactivity <- function(input) {
   output
 }
 
-#users set initial vlaue(input) 2
+#users set initial value(input) 2
 input <- 2
 
 #reactivity function takes input value 2,
@@ -183,7 +183,7 @@ reactivity(input)
     ## [1] 6
 
 ``` r
-#set another differnet input
+#set another different input
 input <- 4
 reactivity(input)
 ```
