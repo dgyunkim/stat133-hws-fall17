@@ -1,4 +1,4 @@
-Post 1 - Reactivity in Shiny Apps
+Post 01 - Reactivity in Shiny Apps
 ================
 Donggyun Kim
 10/30/2017

@@ -1,6 +1,6 @@
 ---
 author: "Donggyun Kim"
-title: "Post 1 - Reactivity in Shiny Apps"
+title: "Post 01 - Reactivity in Shiny Apps"
 date: "10/30/2017"
 output: html_document
 ---
