@@ -1,0 +1,292 @@
+---
+title: "lab08"
+author: "Donggyun Kim"
+date: "10/19/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+vec <- c(3, 1, 4) 
+
+for (j in 1:3 ){
+  print(vec[j])
+}
+```
+
+```{r}
+vec <- c(3, 1, 4)  
+vec2 <- rep(0, length(vec)) 
+
+for (i in 1:length(vec)) {
+  vec2[i] <- vec[i]*3
+}
+
+vec2
+```
+
+Summation Series
+```{r}
+summation <- function (n = 0) {
+  sum = 0
+  for (k in 0 : n) {
+    sum <-  sum + 1/2^k
+  }
+  sum
+}
+
+summation()
+summation(2)
+summation(100)
+summation(10000)
+
+summation2 <- function (n = 0) {
+  sum = 0
+  for (k in 0 : n) {
+    sum <- sum + 1/9^k
+  }
+  sum
+}
+
+summation2()
+summation2(2)
+summation2(100)
+summation2(10000)
+```
+
+Arithmetic Series
+```{r}
+arithmetic <- function (n = 1) {
+  a1 = 3
+  d = 3
+  sum = 0
+  for (i in 1 : n) {
+    an = a1 + (i-1)*d
+    sum = sum + an
+  }
+  sum
+}
+
+```
+
+Geometric Sequence
+```{r}
+geometric <- function (n = 1) {
+  a1 = 3
+  r = 3
+  sum = 0
+  vec = rep(0, length(n))
+  for (i in 1 : n) {
+    an = a1 * r^(i-1)
+    sum = sum + an
+    vec[i] = sum
+  }
+  print(sum)
+  vec
+}
+```
+
+Sine Approximation
+```{r}
+sine <- function (x = 0, n = 1) {
+  sum = 0
+  for (i in 1 : n) {
+    an = (-1)^(i-1)*x^(2*i-1)/factorial(2*i-1)
+    sum = sum + an
+    }
+  sum
+}
+sine(pi/2, 5)
+sine(pi/2, 10)
+sine(pi/2, 50)
+sine(pi/2, 100)
+```
+
+For loop with a matrix
+```{r}
+set.seed(123)
+X <- matrix(rnorm(12), nrow = 4, ncol = 3)
+X
+Y <- matrix(0, nrow = nrow(X), ncol = ncol(X))
+for (i in 1 : nrow(X)) {
+  for (j in 1 : ncol(X)) {
+    if (X[i,j] < 0) {
+      Y[i,j] <- X[i,j]^2
+    }
+    else {
+      Y[i,j] <- sqrt(X[i,j])
+    }
+  }
+}
+
+Y
+```
+
+Dividing a number by 2 multiple times
+```{r}
+reduce <- function(x) {
+  while (x %% 2 == 0) {
+    print(x)
+    x <- x/2
+  }
+}
+
+reduce(898128000)
+```
+
+Average
+```{r}
+xbar <- function (x = 0) {
+  n <- length(x)
+  sum = 0
+  for (i in 1 : n) {
+    sum = sum + x[i]
+  }
+  xbar <- sum / n
+  xbar
+}
+x <- 1 : 100
+xbar(x)
+```
+
+
+```{r}
+xbar1 <- function (x = 0) {
+  n <- length(x)
+  sum = 0
+  i = 1
+  while (i <= length(x)) {
+    sum = sum + x[i]
+    i = i + 1
+  }
+  xbar <- sum / n
+  xbar
+}
+xbar1(x)
+```
+
+```{r}
+xbar2 <- function (x = 0) {
+  n <- length(x)
+  sum <- 0
+  i <-  1
+  repeat {
+    if (i > length(x)) {
+      xbar <- sum / n
+    break
+    }
+  sum = sum + x[i]
+  i = i + 1
+  }
+  xbar
+}
+
+xbar2(x)
+```
+
+```{r}
+stdv <- function (x = 0) {
+  n <- length(x)
+  xbar <- mean(x)
+  sum = 0
+  i = 1
+  repeat{
+    if (i > length(x)){
+      stdv = sqrt(sum/n-1)
+      break
+    }
+    sum = sum + (x[i] - xbar)^2
+    i = i + 1
+  }
+  stdv
+}
+
+stdv(x)
+```
+
+```{r}
+stdv1 <- function (x = 0) {
+  n <- length(x)
+  xbar <- mean(x)
+  sum = 0
+  for (i in 1 : n) {
+    sum = sum + (x[i] - xbar)^2
+  }
+  stdv = sqrt(sum/(n-1))
+  stdv
+}
+
+stdv1(x)
+```
+
+```{r}
+stdv2 <- function (x = 0) {
+  n <- length(x)
+  xbar <- mean(x)
+  sum = 0
+  while (i <= length(x)){
+    sum = sum + (x[i] - xbar)^2
+    i = i + 1
+  }
+  stdv = sqrt(sum/(n-1))
+  stdv
+}
+
+stdv2(x)
+```
+
+```{r}
+x <- 1:50
+geombar <- function(x = 0) {
+  n <- length(x)
+  mul <- 1
+  i = 1
+  repeat{
+    if(i > n){
+      mul = mul^(1/n)
+      break
+    }
+    mul = mul * x[i]
+    i = i + 1
+  }
+  mul
+}
+
+geombar(x)
+```
+
+```{r}
+x <- 1:50
+geombar2 <- function(x = 0){
+  n <- length(x)
+  mul <- 1
+  i = 1
+  while(i <= n){
+    mul <- mul*x[i]
+    i = i + 1
+  }
+  mul <- mul^(1/n)
+  mul
+}
+
+geombar2(x)
+```
+
+```{r}
+x <- 1:50
+geombar3 <- function(x = 0){
+  n <- length(x)
+  mul <- 1
+  for(i in 1 : n){
+    mul <- mul * x[i]
+  }
+  mul <- mul^(1/n)
+  mul
+}
+
+geombar3(x)
+```
+
