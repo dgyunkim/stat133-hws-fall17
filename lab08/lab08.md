@@ -1,15 +1,9 @@
----
-title: "lab08"
-author: "Donggyun Kim"
-date: "10/19/2017"
-output: github_document
----
+lab08
+================
+Donggyun Kim
+10/19/2017
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r}
+``` r
 vec <- c(3, 1, 4) 
 
 for (j in 1:3 ){
@@ -17,7 +11,11 @@ for (j in 1:3 ){
 }
 ```
 
-```{r}
+    ## [1] 3
+    ## [1] 1
+    ## [1] 4
+
+``` r
 vec <- c(3, 1, 4)  
 vec2 <- rep(0, length(vec)) 
 
@@ -28,8 +26,11 @@ for (i in 1:length(vec)) {
 vec2
 ```
 
+    ## [1]  9  3 12
+
 Summation Series
-```{r}
+
+``` r
 summation <- function (n = 0) {
   sum = 0
   for (k in 0 : n) {
@@ -39,10 +40,29 @@ summation <- function (n = 0) {
 }
 
 summation()
-summation(2)
-summation(100)
-summation(10000)
+```
 
+    ## [1] 1
+
+``` r
+summation(2)
+```
+
+    ## [1] 1.75
+
+``` r
+summation(100)
+```
+
+    ## [1] 2
+
+``` r
+summation(10000)
+```
+
+    ## [1] 2
+
+``` r
 summation2 <- function (n = 0) {
   sum = 0
   for (k in 0 : n) {
@@ -52,13 +72,31 @@ summation2 <- function (n = 0) {
 }
 
 summation2()
+```
+
+    ## [1] 1
+
+``` r
 summation2(2)
+```
+
+    ## [1] 1.123457
+
+``` r
 summation2(100)
+```
+
+    ## [1] 1.125
+
+``` r
 summation2(10000)
 ```
 
+    ## [1] 1.125
+
 Arithmetic Series
-```{r}
+
+``` r
 arithmetic <- function (n = 1) {
   a1 = 3
   d = 3
@@ -69,11 +107,11 @@ arithmetic <- function (n = 1) {
   }
   sum
 }
-
 ```
 
 Geometric Sequence
-```{r}
+
+``` r
 geometric <- function (n = 1) {
   a1 = 3
   r = 3
@@ -90,7 +128,8 @@ geometric <- function (n = 1) {
 ```
 
 Sine Approximation
-```{r}
+
+``` r
 sine <- function (x = 0, n = 1) {
   sum = 0
   for (i in 1 : n) {
@@ -100,16 +139,73 @@ sine <- function (x = 0, n = 1) {
   sum
 }
 sine(pi/2, 5)
+```
+
+    ## [1] 1.000004
+
+``` r
 sine(pi/2, 10)
+```
+
+    ## [1] 1
+
+``` r
 sine(pi/2, 50)
+```
+
+    ## [1] 1
+
+``` r
 sine(pi/2, 100)
 ```
 
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## Warning in factorial(2 * i - 1): value out of range in 'gammafn'
+
+    ## [1] 1
+
 For loop with a matrix
-```{r}
+
+``` r
 set.seed(123)
 X <- matrix(rnorm(12), nrow = 4, ncol = 3)
 X
+```
+
+    ##             [,1]       [,2]       [,3]
+    ## [1,] -0.56047565  0.1292877 -0.6868529
+    ## [2,] -0.23017749  1.7150650 -0.4456620
+    ## [3,]  1.55870831  0.4609162  1.2240818
+    ## [4,]  0.07050839 -1.2650612  0.3598138
+
+``` r
 Y <- matrix(0, nrow = nrow(X), ncol = ncol(X))
 for (i in 1 : nrow(X)) {
   for (j in 1 : ncol(X)) {
@@ -125,8 +221,15 @@ for (i in 1 : nrow(X)) {
 Y
 ```
 
+    ##            [,1]      [,2]      [,3]
+    ## [1,] 0.31413295 0.3595660 0.4717668
+    ## [2,] 0.05298168 1.3096049 0.1986146
+    ## [3,] 1.24848240 0.6789081 1.1063823
+    ## [4,] 0.26553416 1.6003799 0.5998448
+
 Dividing a number by 2 multiple times
-```{r}
+
+``` r
 reduce <- function(x) {
   while (x %% 2 == 0) {
     print(x)
@@ -137,8 +240,17 @@ reduce <- function(x) {
 reduce(898128000)
 ```
 
+    ## [1] 898128000
+    ## [1] 449064000
+    ## [1] 224532000
+    ## [1] 112266000
+    ## [1] 56133000
+    ## [1] 28066500
+    ## [1] 14033250
+
 Average
-```{r}
+
+``` r
 xbar <- function (x = 0) {
   n <- length(x)
   sum = 0
@@ -152,8 +264,9 @@ x <- 1 : 100
 xbar(x)
 ```
 
+    ## [1] 50.5
 
-```{r}
+``` r
 xbar1 <- function (x = 0) {
   n <- length(x)
   sum = 0
@@ -168,7 +281,9 @@ xbar1 <- function (x = 0) {
 xbar1(x)
 ```
 
-```{r}
+    ## [1] 50.5
+
+``` r
 xbar2 <- function (x = 0) {
   n <- length(x)
   sum <- 0
@@ -187,7 +302,9 @@ xbar2 <- function (x = 0) {
 xbar2(x)
 ```
 
-```{r}
+    ## [1] 50.5
+
+``` r
 stdv <- function (x = 0) {
   n <- length(x)
   xbar <- mean(x)
@@ -207,7 +324,9 @@ stdv <- function (x = 0) {
 stdv(x)
 ```
 
-```{r}
+    ## [1] 28.84874
+
+``` r
 stdv1 <- function (x = 0) {
   n <- length(x)
   xbar <- mean(x)
@@ -222,7 +341,9 @@ stdv1 <- function (x = 0) {
 stdv1(x)
 ```
 
-```{r}
+    ## [1] 29.01149
+
+``` r
 stdv2 <- function (x = 0) {
   n <- length(x)
   xbar <- mean(x)
@@ -238,7 +359,9 @@ stdv2 <- function (x = 0) {
 stdv2(x)
 ```
 
-```{r}
+    ## [1] 27.75547
+
+``` r
 x <- 1:50
 geombar <- function(x = 0) {
   n <- length(x)
@@ -258,7 +381,9 @@ geombar <- function(x = 0) {
 geombar(x)
 ```
 
-```{r}
+    ## [1] 19.48325
+
+``` r
 x <- 1:50
 geombar2 <- function(x = 0){
   n <- length(x)
@@ -275,7 +400,9 @@ geombar2 <- function(x = 0){
 geombar2(x)
 ```
 
-```{r}
+    ## [1] 19.48325
+
+``` r
 x <- 1:50
 geombar3 <- function(x = 0){
   n <- length(x)
@@ -290,3 +417,4 @@ geombar3 <- function(x = 0){
 geombar3(x)
 ```
 
+    ## [1] 19.48325
