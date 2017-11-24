@@ -1,0 +1,11 @@
+---
+title: "lab10"
+author: "Donggyun Kim"
+date: "2017-11-23"
+output: github_document
+---
+
+This is the first line
+A 2nd line
+
+The quick brown fox jumps over the lazy dog
