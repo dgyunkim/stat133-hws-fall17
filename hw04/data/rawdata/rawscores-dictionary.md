@@ -1,7 +1,7 @@
 ## Data Dictionary of "rawscores.csv"
-This data set has 335 rows and 16 columns.  
-Each row represents scores of each student in STAT 133 class.  
-Columns represent homeworks, attendence, quizes, and exams.  
+This data set has 335 rows and 16 columns. Each row represents scores of each 
+student in STAT 133 class. Columns contain homeworks, attendence, quizes, 
+and exams.
 
 ### Columns
 `HW1`: **numeric**, from 0 to 100, 9 NA's  

@@ -74,6 +74,9 @@ get_maximum <- function(x, na.rm = FALSE) {
 #' a <- c(1, 4, 7, NA, 10)
 #' get_range(a, na.rm = TRUE)
 get_range <- function(x, na.rm = FALSE) {
+  if (!is.numeric(x)) {
+    stop("non-numeric vector")
+  }
   get_maximum(x, na.rm) - get_minimum(x, na.rm)
 }
 
@@ -169,7 +172,7 @@ get_stdev <- function(x, na.rm = FALSE) {
   avg <- get_average(x)
   for (i in 1:length(x)) {
     dif_square <- (x[i] - avg)^2
-    sum = sum + dif_square
+    sum <- sum + dif_square
   }
   sqrt(sum/(length(x)-1))
 }
@@ -198,7 +201,7 @@ get_quartile1 <- function(x, na.rm = FALSE) {
   if (is.na(x[1])) {
     return(x[1])
   }
-  quantile(x)[[2]]
+  quantile(x, probs = 0.25)[[1]]
 }
 
 
@@ -225,7 +228,7 @@ get_quartile3 <- function(x, na.rm = FALSE) {
   if (is.na(x[1])) {
     return(x[1])
   }
-  quantile(x)[[4]]
+  quantile(x, probs = 0.75)[[1]]
 }
 
 
@@ -360,7 +363,7 @@ print_stats <- function(x) {
 #' @param x a numeric vector
 #' @param xmin a minimum numeric value
 #' @param xmax a maximum numeric value
-#' @returna a rescaled vector with a potential scale from 0 to 100
+#' @return a rescaled vector with a potential scale from 0 to 100
 #' @example 
 #' b <- c(18, 15, 16, 4, 17, 9)
 #' rescale100(b, xmin = 0, xmax = 20)

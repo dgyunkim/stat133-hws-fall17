@@ -118,10 +118,8 @@ for(i in 1:length(mydat$Quiz)){
 #add new Overall variable
 mydat$Overall <- numeric(length(mydat$Test1)) #initialize the new variable
 for(i in 1:length(mydat$Overall)){
-  #convert lab attendence into score
-  lab <- score_lab(mydat$ATT[i])
   #create a vector consisting of lab, homework, quiz, and test scores
-  ova <- c(0.1*lab, 0.3*mydat$Homework[i], 0.15*mydat$Quiz[i], 
+  ova <- c(0.1*mydat$Lab[i], 0.3*mydat$Homework[i], 0.15*mydat$Quiz[i], 
            0.2*mydat$Test1[i], 0.25*mydat$Test2[i])
   mydat$Overall[i] <- sum(ova)
 }
@@ -155,44 +153,21 @@ for(i in 1:length(mydat$Grade)){
   }
 }
 
+#define file names
+file_name <- c("Lab", "Homework", "Quiz", "Test1", "Test2", "Overall")
+
+#create function that save summary statistics
+sink_summary <- function(data, name) {
+  destination <- paste0("../output/", name, "-stats.txt")
+  sink(destination)
+  cat(paste0("The summary statistics of ", name, " score\n\n"))
+  print_stats(summary_stats(data[[name]]))
+  sink()
+}
+
 #save summary statistics of Test, Lab, Homework, Quiz, and Overall score
-for(i in 17 : length(mydat) - 1) {
-  if (i == 17) {
-    sink("../output/Test1-stats.txt")
-    cat("The summary statistics of Test1 score\n\n")
-    print_stats(summary_stats(mydat[[i]]))
-    sink()
-  }
-  if (i == 18) {
-    sink("../output/Test2-stats.txt")
-    cat("The summary statistics of Test2 score\n\n")
-    print_stats(summary_stats(mydat[[i]]))
-    sink()
-  }
-  if (i == 19) {
-    sink("../output/Lab-stats.txt")
-    cat("The summary statistics of Lab score\n\n")
-    print_stats(summary_stats(mydat[[i]]))
-    sink()
-  }
-  if (i == 20) {
-    sink("../output/Homework-stats.txt")
-    cat("The summary statistics of Homework score\n\n")
-    print_stats(summary_stats(mydat[[i]]))
-    sink()
-  }
-  if (i == 21) {
-    sink("../output/Quiz-stats.txt")
-    cat("The summary statistics of Quiz score\n\n")
-    print_stats(summary_stats(mydat[[i]]))
-    sink()
-  }
-  if (i == 22) {
-    sink("../output/Overall-stats.txt")
-    cat("The summary statistics of Overall score\n\n")
-    print_stats(summary_stats(mydat[[i]]))
-    sink()
-  }
+for(i in 1:length(file_name)) {
+  sink_summary(mydat, file_name[i])
 }
 
 #save the structure of clean data frame
